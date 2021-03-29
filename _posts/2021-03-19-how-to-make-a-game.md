@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How To Create Video Games(A Technical perspective)"
-subtitle: "What goes into making aa computer game?"
+subtitle: "What goes into making a computer game?"
 date: 2020-01-26 23:45:13 -0400
 background: '/img/posts/01.jpg'
 ---
