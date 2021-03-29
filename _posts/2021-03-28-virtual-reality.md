@@ -2,7 +2,7 @@
 layout: post
 title: What You Should Know About Virtual Reality
 subtitle: "What you should know about virtual reality?"
-date: 2020-03-26 23:45:13 -0400
+date: 2021-03-26 23:45:13 -0400
 background: '/img/posts/01.jpg'
 ---
 
