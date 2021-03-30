@@ -3,7 +3,7 @@ layout: post
 title: "How To Create Video Games(A Technical perspective)"
 subtitle: "What goes into making a computer game?"
 date: 2021-01-26 23:45:13 -0400
-background: '/img/posts/01.jpg'
+background: '/images/create_games/game_dev.jpg'
 ---
 
 So you've been playing computer games for a while and now you want to know how to make them?
