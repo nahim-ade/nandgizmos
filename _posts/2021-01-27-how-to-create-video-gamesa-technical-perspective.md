@@ -51,7 +51,7 @@ Don't rush it please, keep it simple and continue being humble chief. I am not g
 
 You can write a simple game like pong, tetris, breakout or something of that sort. You can use [pygame](https://www.pygame.org/)(python), [Phaser](https://phaser.io/)(Javascript), [Cocos2D](http://cocos2d.org/)(C++), [monogame](https://www.monogame.net/)(C\#), [libgdx](https://libgdx.badlogicgames.com/)(Java) etc. There are tons of tutorials on the internet about using each of these frameworks to create pretty awesome games. This [2D breakout game using pure JavaScript](https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript) really made sense to me as a beginner. You could as well go traditional, [learn openGL](http://learnopengl.com/) or [directX](https://www.youtube.com/playlist?list=PLv8DnRaQOs5-ST_VDqgbbMRtzMtpK36Hy) and write a simplistic game using C/C++ entirely from scratch. You most likely cannot do these by yourself so you gotta know how to google stuff(it is very important\!). I expect that you are going to write your first graphical game by following the exact instructions of a tutorial, do not be too hard on yourself.
 
-![](/startbootstrap-clean-blog-jekyll/images/create_games/runner.png){: width="300" height="600"}
+![](/startbootstrap-clean-blog-jekyll/images/create_games/runner.png){: width="512" height="250"}
 
 *A 2D runner game made with libgdx*
 
