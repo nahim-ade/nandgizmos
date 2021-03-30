@@ -3,7 +3,7 @@ layout: post
 title: What You Should Know About Virtual Reality
 subtitle: "What you should know about virtual reality?"
 date: 2021-03-26 23:45:13 -0400
-background: '/img/posts/01.jpg'
+background: '/images/VR/feature.jpg'
 ---
 
 <style>
@@ -12,7 +12,7 @@ background: '/img/posts/01.jpg'
 
 *You can't see it to believe it, you have to be it to believe it.*
 
-![Video_Game]({{ site.baseurl }}/images/VR/feature.jpg)
+<!--![Video_Game]({{ site.baseurl }}/images/VR/feature.jpg)-->
 
 Virtual Reality(VR) puts you in a distant or virtual environment and allows you to experience a space which cannot be reached physically. It offers a sense of depth and presence which you cannot get even with the best quality HD TV screens. This is achieved by the use of VR headsets. 
 <!-- It gives an illusion of presence to wearer of the headset. -->
