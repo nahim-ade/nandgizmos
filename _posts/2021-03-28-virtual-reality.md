@@ -47,7 +47,7 @@ There's really nothing to **Smartphone-based** VR headsets, its just a pair of l
     <img src="/images/VR/cardboard.jpg" alt="cardboard"
 	    title="cardboard" width="200" height="150" />
     <img src="/images/VR/googlecardboard.jpg" alt="google cardboard"
-	    title="google cardboard"  />
+	    title="google cardboard"  width="200" height="150"  />
 </div>
 
 <!-- ![Video_Game]({{ site.baseurl }}/images/VR/buildcdbrd.jpg)
