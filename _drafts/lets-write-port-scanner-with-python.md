@@ -2,7 +2,7 @@
 layout: post
 title: Let's write Port Scanner with Python
 subtitle:
-date: 2021-04-04 23:45:25
+date: 2021-04-05 00:08:45
 background: /images/portscanner
 ---
 **What is a Port Scanner?**
@@ -16,6 +16,12 @@ Computer ports are like docking points for the flow of data from one device to a
 The general protocols used in port scanning are TCP(Transmission Control Protocol) and UDP(User Datagram Protocol). They are both transmission methods used in the internet but have different mechanisms.
 
 In this article, we will write a boilerplate TCP Port Scanner using Python programming language. There are several port scanning tools out there of which **NMAP&nbsp;**is the most popular and it should be noted that the one we will be writing here is just a boilerplate program to illustrate the working process and and is nothing more than a programming exercise. As a hacker/administrator it is often recommended to use preexisting tools like nmap so as not to go through the stress of writing and debugging, wasting precious time resulting in a program which may not even be as efficient as required.
+
+If the reader is not familiar with python or programming in general, it is advised to go read up as this is not a programming tutorial nor a python lesson.
+
+**Let's get started\!**
+
+First of all, the libraries we will be using for this excercise are **socket** and **IPy**. Socket class will be used to connect to the port while IPy will be used to resolve parse IP addresses.
 
 &nbsp;
 
