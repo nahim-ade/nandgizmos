@@ -21,7 +21,32 @@ If the reader is not familiar with python or programming in general, it is advis
 
 **Let's get started\!**
 
-First of all, the libraries we will be using for this excercise are **socket** and **IPy**. Socket class will be used to connect to the port while IPy will be used to parse IP addresses.
+First of all, the libraries we will be using for this excercise are **socket** and **IPy**. Socket class will be used to connect to the port while IPy will be used to parse IP addresses. You may have to ```pip-install``` the IPy library.
+
+Lets get started:
+
+```
+import socket
+from IPy import IP
+
+
+try:
+    # Initialise socket class
+    sock = socket.socket()
+
+    # Set time limit per port scan to 0.5seconds
+    sock.settimeout(0.5)
+
+    # Connect to the specified IP address on the specified port
+    for port in range(100):
+        sock.connect((10.0.0.1, port))
+        try:
+            print('PORT ' + str(port) + ' - OPEN ' )
+        except
+            print('PORT ' + str(port) + ' - OPEN')
+except:
+    pass
+```
 
 &nbsp;
 
