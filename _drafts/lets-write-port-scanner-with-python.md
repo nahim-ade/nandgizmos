@@ -34,19 +34,21 @@ try:
     # Initialise socket class
     sock = socket.socket()
 
-    # Set time limit per port scan to 0.5seconds
+    # Set time limit per port scan to 0.5 seconds
     sock.settimeout(0.5)
 
     # Connect to the specified IP address on the specified port
     for port in range(100):
-        sock.connect((10.0.0.1, port))
-        try:
-            print('PORT ' + str(port) + ' - OPEN ' )
-        except
-            print('PORT ' + str(port) + ' - OPEN')
+        sock.connect((12.0.0.1, port))
+    
+        print('PORT ' + str(port) + ' - OPEN \n' )
 except:
     pass
+
 ```
+
+
+We start by creating an instance of a socket class(required for TCP/IP connections). We then try to 
 
 &nbsp;
 
