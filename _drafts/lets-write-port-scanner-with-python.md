@@ -2,7 +2,7 @@
 layout: post
 title: Let's write Port Scanner with Python
 subtitle:
-date: 2021-04-07 11:17:19
+date: 2021-04-05 00:08:45
 background: /images/portscanner
 ---
 **What is a Port Scanner?**
@@ -21,7 +21,7 @@ If the reader is not familiar with python or programming in general, it is advis
 
 **Let's get started\!**
 
-First of all, the libraries we will be using for this excercise are **socket** and **IPy**. Socket class will be used to connect to the port while IPy will be used to resolve parse IP addresses. You may have to pip-install the IPy package
+First of all, the libraries we will be using for this excercise are **socket** and **IPy**. Socket class will be used to connect to the port while IPy will be used to parse IP addresses.
 
 &nbsp;
 
