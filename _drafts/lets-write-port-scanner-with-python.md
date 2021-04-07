@@ -15,7 +15,7 @@ Computer ports are like docking points for the flow of data from one device to a
 
 The general protocols used in port scanning are TCP(Transmission Control Protocol) and UDP(User Datagram Protocol). They are both transmission methods used in the internet but have different mechanisms.
 
-In this article, we will write a boilerplate TCP Port Scanner using Python programming language. There are several port scanning tools out there of which **NMAP&nbsp;**is the most popular and it should be noted that the one we will be writing here is just a boilerplate program to illustrate the working process and and is nothing more than a programming exercise. As a hacker/administrator it is often recommended to use preexisting tools like nmap so as not to go through the stress of writing and debugging, wasting precious time resulting in a program which may not even be as efficient as required.
+In this article, we will write a boilerplate TCP Port Scanner using Python programming language. There are several port scanning tools out there of which **NMAP&nbsp;**is the most popular and it should be noted that the one we will be writing here is just a boilerplate program to illustrate the working process and is nothing more than a programming exercise. As a hacker/administrator it is often recommended to use preexisting tools like nmap so as not to go through the stress of writing and debugging, wasting precious time resulting in a program which may not even be as efficient as required.
 
 If the reader is not familiar with python or programming in general, it is advised to go read up as this is not a programming tutorial nor a python lesson.
 
