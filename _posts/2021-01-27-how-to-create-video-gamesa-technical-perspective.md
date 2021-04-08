@@ -84,7 +84,7 @@ If you want to secure a career as a full-time Game Programmer, it is advised to 
 
 There are institutions of high prestige that offer Game Development courses in programming, Design and Art. A very good example is [Digipen](https://www.digipen.edu/), they offer Bachelors and Masters Degrees, you can see that the Game Development industry is no joke at all.
 
-![](/images/afortnight.jpg){: width="600" height="300"}&nbsp;*Fortnite and far cry were made using [unreal](https://www.unrealengine.com) and [cryengine](https://www.cryengine.com/) respectively.*
+![](/images/createGames/afortnight.jpg){: width="600" height="300"}&nbsp;*Fortnite and far cry were made using [unreal](https://www.unrealengine.com) and [cryengine](https://www.cryengine.com/) respectively.*
 
 ## Links And Resources
 
