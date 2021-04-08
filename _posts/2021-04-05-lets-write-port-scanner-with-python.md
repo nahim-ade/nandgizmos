@@ -2,7 +2,7 @@
 layout: post
 title: Let's write Port Scanner with Python
 subtitle:
-date: 2021-04-05 00:08:45
+date: 2021-04-05 00:08:00
 background: /images/portscanner
 ---
 **What is a Port Scanner?**
@@ -21,14 +21,13 @@ If the reader is not familiar with python or programming in general, it is advis
 
 **Let's get started\!**
 
-First of all, the libraries we will be using for this excercise are **socket** and **IPy**. Socket class will be used to connect to the port while IPy will be used to parse IP addresses. You may have to ```pip-install``` the IPy library.
+First of all, the libraries we will be using for this excercise are **socket** and **IPy**. Socket class will be used to connect to the port while IPy will be used to parse IP addresses. You may have to `pip-install` the IPy library.
 
 Lets get started:
 
-```
+~~~
 import socket
 from IPy import IP
-
 
 try:
     # Initialise socket class
@@ -40,17 +39,15 @@ try:
     # Connect to the specified IP address on the specified port
     for port in range(100):
         sock.connect((12.0.0.1, port))
-    
+
         print('PORT ' + str(port) + ' - OPEN \n' )
 except:
     pass
+~~~
 
-```
+We start by creating an instance of a socket class(required for TCP/IP connections). We then try to connect to address 12.0.0.1(Use an IP address that you have permission to mess with\!) on ports 1 - 100. If the connection is successful we print out the port number signifying it is open. the `sock.settimeout(0.5)` line limits the time to scan each port to 0.5 seconds to make the whole process faster. Without the time out the scan will take a very long time but with very efficient result. Although 0.5 seconds is just enough.
 
-
-We start by creating an instance of a socket class(required for TCP/IP connections). We then try to connect to address 12.0.0.1(Use an IP address that you have permission to mess with!) on ports 1 - 100. If the connection is successful we print out the port number signifying it is open. the ```sock.settimeout(0.5)``` line limits the time to scan each port to 0.5 seconds to make the whole process faster. Without the time out the scan will take a very long time but with very efficient result. Although 0.5 seconds is just enough.
-
-You can get really creative and flexible with your own port scanner. This program can be used as a starter to create your own. You can make it a library by encapsulating the whole thing in a class and modularise each task to make the program even more neat. You should allow user to enter the IP address manually then use the IPy lib to parse it into a readable form. You can add a few things like a banner for instance that will display information about the protocol on each port. You can even allow user to enter multiple IP/website addresses, separated with a comma for instance and use the ```split()``` method, then scan each of them. Also be flexible with the port numbers you scan, for instance you can allow user enter how many ports to scan.
+You can get really creative and flexible with your own port scanner. This program can be used as a starter to create your own. You can make it a library by encapsulating the whole thing in a class and modularise each task to make the program even more neat. You should allow user to enter the IP address manually then use the IPy lib to parse it into a readable form. You can add a few things like a banner for instance that will display information about the protocol on each port. You can even allow user to enter multiple IP/website addresses, separated with a comma for instance and use the `split()` method, then scan each of them. Also be flexible with the port numbers you scan, for instance you can allow user enter how many ports to scan.
 
 &nbsp;
 
@@ -62,4 +59,4 @@ You can get really creative and flexible with your own port scanner. This progra
 
 ### Disclaimer
 
-This program is intended for individuals to test their own equipment for weak security, and the author will take no responsibility if it is put to any other use
+This program is intended for individuals to test their own equipment for weak security, and the author will take no responsibility if it is put to any other use.
