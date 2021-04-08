@@ -48,7 +48,7 @@ except:
 ```
 
 
-We start by creating an instance of a socket class(required for TCP/IP connections). We then try to 
+We start by creating an instance of a socket class(required for TCP/IP connections). We then try to connect to address 12.0.0.1(Use an IP address that you have permission to mess with!) on ports 1 - 100. 
 
 &nbsp;
 
