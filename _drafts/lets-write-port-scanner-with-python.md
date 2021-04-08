@@ -48,7 +48,9 @@ except:
 ```
 
 
-We start by creating an instance of a socket class(required for TCP/IP connections). We then try to connect to address 12.0.0.1(Use an IP address that you have permission to mess with!) on ports 1 - 100. 
+We start by creating an instance of a socket class(required for TCP/IP connections). We then try to connect to address 12.0.0.1(Use an IP address that you have permission to mess with!) on ports 1 - 100. If the connection is successful we print out the port number signifying it is open. the ```sock.settimeout(0.5)``` line limits the time to scan each port to 0.5 seconds to make the whole process faster. Without the time out the scan will take a very long time but with very efficient result. Although 0.5 seconds is just enough.
+
+You can get really creative and flexible with your own port scanner. This program can be used as a starter to create your own. You can make it a library by encapsulating the whole thing in a class and modularise each task to make the program even more neat. You should allow user to enter the IP address manually then use the IPy lib to parse it into a readable form. You can add a few things like a banner for instance that will display information about the protocol on each port. You can even allow user to enter multiple IP/website addresses, separated with a comma for instance and use the ```split()``` method, then scan each of them. Also be flexible with the port numbers you scan, for instance you can allow user enter how many ports to scan.
 
 &nbsp;
 
