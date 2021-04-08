@@ -3,7 +3,7 @@ layout: post
 title: Let's write Port Scanner with Python
 subtitle:
 date: 2021-04-05 00:08:00
-background: /images/portscanner/portscanner
+background: /images/portscanner/portscanner.jpg
 ---
 **What is a Port Scanner?**
 
