@@ -2,7 +2,7 @@
 layout: post
 title: Let Us Render a Triangle With OpenGL using C++ and SDL
 subtitle: Part 1 - Setting Up Environment
-date: 2021-04-09 00:48:13
+date: 2021-04-09 00:59:46
 background: /images/GameProg/pc_game.png
 ---
 In this article, we are going to code a game entirely from scratch using **C++** without using any game engines or frameworks. We'll be using **SDL** to create our window and use **OpenGL** to render(draw) stuff on screen.
@@ -21,4 +21,4 @@ Go to the&nbsp;[SDL2 download page](https://www.libsdl.org/download-2.0.php)&nbs
 
 This folder contains the include- and library files needed for compiling, as well as the&nbsp;***SDL2.dll***&nbsp;file that we need to distribute along with the final compiled .exe file. Copy all **".lib"** files from **lib &gt; x86**&nbsp;directory into&nbsp;**deps &gt; lib&nbsp;**in your project directory. Copy the **SDL2.dll** file from **lib &gt; x86**&nbsp;directory into **bin**&nbsp;folder in your project directory. Copy all files from **include**&nbsp;folder into&nbsp;**deps &gt; include &gt; SDL2 folder&nbsp;**in your project directory
 
-Now go into the&nbsp;*SDL2/bin*&nbsp;folder and copy the&nbsp;*SDL2.dll*&nbsp;file to where your&nbsp;*main.c*&nbsp;file is located (or&nbsp;*main.cpp*&nbsp;if you are writing in C++).
+Go to GLEW main page and download Windows binaries. Current link is&nbsp;[this](http://glew.sourceforge.net/)&nbsp;for now. Extract the zip file. Copy&nbsp;
