@@ -139,7 +139,7 @@ I also created the following sublime-build file
         },
 
         {
-            "name": "ruNMake",
+            "name": "build",
             "shell_cmd": "nmake"
         }
     ]
