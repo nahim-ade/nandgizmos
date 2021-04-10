@@ -145,3 +145,38 @@ I also created the following sublime-build file
     ]
 }
 ```
+
+Next, create a new file, name it "Makefile" and save it in the root of your project. Now we should have the following file structure for our project.
+
+
+
+
+Copy the following contents into you newly created Makefile:
+
+```
+INCLUDES=deps/include
+LIBS_DIR=deps/lib
+
+LIBS=opengl32.lib glu32.lib SDL2main.lib SDL2.lib glew32.lib
+
+# Specify compiler
+CC=cl.exe
+
+# Specify linker
+LINK=link.exe
+
+# Build all target
+all : app
+
+# Compile and Link the object files and dependent libraries into a binary
+app : objs/*obj
+	$(LINK)  -out:bin/app.exe -LIBPATH:$(LIBS_DIR) objs/*obj $(LIBS)
+
+# Compile the source files into object files
+objs/*obj : src/*.cpp
+	$(CC) -D "WIN32" /Fo"objs/" -c -EHsc src/*.cpp -I $(INCLUDES)
+```
+
+The Makefile above will compile our source files and link the object files and dependent libraries into an exe to the bin folder. Since we are using MSVC we will be using nmake to build. If you would like to know about Makefiles you can read up on the internet. I will write about it in the future.
+
+In the next part, we will be writing the main C++ source codes to render our Triangle.
