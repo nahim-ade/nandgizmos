@@ -2,7 +2,7 @@
 layout: post
 title: Let Us Render a Triangle With OpenGL Using C++ and SDL
 subtitle: Part 2 - Automating the Build Process
-date: 2021-04-10 09:10:25
+date: 2021-04-10 09:57:18
 background: /images/createGames/game_dev.jpg
 ---
 In the last tutorial we set up our development environment for creating our "Hello world" game with SDL and OpenGL using C++ programming language.
@@ -15,17 +15,16 @@ Since we are using Sublime Text and not an IDE we are going to have to write a p
 
 To start with, add the following settings to your user preferences (Preferences &gt; Settings or Preferences &gt; Settings - User). Here I'm using the setup for my own local machine; update the path to suit for your version of Visual Studio:
 
-```
+~~~
 "vc_vars_arch": "x86",
 "vc_vars_cmd": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat"
-```
+~~~
 
-The vc_vars_cmd setting is required by the following plugin, but the vc_vars_arch setting is optional; if it is not given, it defaults to x86.
+The vc\_vars\_cmd setting is required by the following plugin, but the vc\_vars\_arch setting is optional; if it is not given, it defaults to x86.
 
-Next, select Tools > Developer > New Plugin from the menu and replace the stub plugin code with the following and save it in the default location that Sublime defaults to as something like set_vc_vars.py:
+Next, select Tools &gt; Developer &gt; New Plugin from the menu and replace the stub plugin code with the following and save it in the default location that Sublime defaults to as something like set\_vc\_vars.py:
 
-
-```
+~~~
 import sublime
 import sublime_plugin
 
@@ -107,9 +106,9 @@ def plugin_loaded():
 
     # Update in the background so we don't block the UI
     Thread(target=install_vc_env).start()
-```
+~~~
 
-Once you save the plugin, Sublime will load it and execute the plugin_loaded function, which will do all of the work.You should see the status bar say VS Environment Enabled if it worked.
+Once you save the plugin, Sublime will load it and execute the plugin\_loaded function, which will do all of the work.You should see the status bar say VS Environment Enabled if it worked.
 
 If you see Error Fetching VS Environment double check that the path to the batch file is correct (note that you need to double all path separators to make them JSON compliant).
 
@@ -125,7 +124,7 @@ This could be made more robust by having it do something like store the current 
 
 I also created the following sublime-build file
 
-```
+~~~
 {
     "shell_cmd": "cl \"${file}\" /Fe\"${file_base_name}\"",
     "working_dir": "${file_path}",
@@ -144,16 +143,15 @@ I also created the following sublime-build file
         }
     ]
 }
-```
+~~~
 
 Next, create a new file, name it "Makefile" and save it in the root of your project. Now we should have the following file structure for our project.
 
-
-
+![](/uploads/lastfilestructure.png){: width="181" height="179"}
 
 Copy the following contents into you newly created Makefile:
 
-```
+~~~
 INCLUDES=deps/include
 LIBS_DIR=deps/lib
 
@@ -175,7 +173,7 @@ app : objs/*obj
 # Compile the source files into object files
 objs/*obj : src/*.cpp
 	$(CC) -D "WIN32" /Fo"objs/" -c -EHsc src/*.cpp -I $(INCLUDES)
-```
+~~~
 
 The Makefile above will compile our source files and link the object files and dependent libraries into an exe to the bin folder. Since we are using MSVC we will be using nmake to build. If you would like to know about Makefiles you can read up on the internet. I will write about it in the future.
 
