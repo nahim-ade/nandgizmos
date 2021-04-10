@@ -19,3 +19,5 @@ To start with, add the following settings to your user preferences (Preferences 
 "vc_vars_arch": "x86",
 "vc_vars_cmd": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat"
 ```
+
+The vc_vars_cmd setting is required by the following plugin, but the vc_vars_arch setting is optional; if it is not given, it defaults to x86.
