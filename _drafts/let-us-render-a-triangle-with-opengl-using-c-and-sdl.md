@@ -15,4 +15,7 @@ Since we are using Sublime Text and not an IDE we are going to have to write a p
 
 To start with, add the following settings to your user preferences (Preferences &gt; Settings or Preferences &gt; Settings - User). Here I'm using the setup for my own local machine; update the path to suit for your version of Visual Studio:
 
-"vc\_vars\_arch": "x86",<br>&nbsp;&nbsp; &nbsp;"vc\_vars\_cmd": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2017\\\\Community\\\\VC\\\\Auxiliary\\\\Build\\\\vcvarsall.bat"
+```
+"vc_vars_arch": "x86",
+"vc_vars_cmd": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat"
+```
