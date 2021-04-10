@@ -122,3 +122,26 @@ As a part of this process we also set a new environment variable that tells the 
 As such, if you need to change the path to the batch file or the architecture that you want to be set up for, you need to change the preference and restart Sublime.
 
 This could be made more robust by having it do something like store the current environment before modifying it and then watching the preferences to see if that setting is changed and act accordingly, but presumably it's not often that you would need to modify these settings.
+
+I also created the following sublime-build file
+
+```
+{
+    "shell_cmd": "cl \"${file}\" /Fe\"${file_base_name}\"",
+    "working_dir": "${file_path}",
+    "selector": "source.c, source.c++",
+
+    "variants":
+    [
+        {
+            "name": "Run",
+            "shell_cmd": "cd bin && app.exe"
+        },
+
+        {
+            "name": "ruNMake",
+            "shell_cmd": "nmake"
+        }
+    ]
+}
+```
