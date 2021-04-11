@@ -8,7 +8,7 @@ background: /images/createGames/game_dev.jpg
 So, we have setup our environment for development and we've automated the build process to make our live easier. Now we have to write the actual game code to render our triangle
 
 We start by including the SDL and glew headers to create our window and call openGL functions
-```
+```c++
 //Using SDL, SDL OpenGL, GLEW, standard IO, and strings
 #define SDL_MAIN_HANDLED
 #include <SDL2\SDL.h>
@@ -23,7 +23,7 @@ We start by including the SDL and glew headers to create our window and call ope
 
 Declare the following variables:
 
-```
+```c++
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
