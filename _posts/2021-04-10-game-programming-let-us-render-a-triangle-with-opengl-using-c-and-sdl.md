@@ -1,242 +1,180 @@
 ---
 layout: post
 title: 'Game Programming: Let Us Render a Triangle With OpenGL Using C++ and SDL'
-subtitle: Part 3 - The Game Code
-date: 2021-04-10 14:28:00
+subtitle: Part 2 - Automating the Build Process
+date: 2021-04-10 09:10:00
 background: /images/createGames/game_dev.jpg
 ---
-So, we have setup our environment for development and we've automated the build process to make our live easier. Now we have to write the actual game code to render our triangle
+In the last tutorial we set up our development environment for creating our "Hello world" game with SDL and OpenGL using C++ programming language.
 
-We start by including the SDL and glew headers to create our window and call openGL functions
+Normally the linker and compiler are usually enabled by running a particular batch file (usually&nbsp;**"vsvarsall.bat"**) somewhere in the installation directory of MSVC.
 
-~~~c++
-//Using SDL, SDL OpenGL, GLEW, standard IO, and strings
-#define SDL_MAIN_HANDLED
-#include <SDL2\SDL.h>
-#include <gl\glew.h>
-#include <SDL2\SDL_opengl.h>
-#include <gl\glu.h>
+&nbsp;
 
-#include <iostream>
+Since we are using Sublime Text and not an IDE we are going to have to write a plugin to have Sublime internally fire up the batch file once at Sublime start up to do what you need to do(permanently enable the MSVC toolset) otherwise each time we want to compile with MSVC we will have to re-enable the compiler and linker.
+
+To start with, add the following settings to your user preferences (Preferences &gt; Settings or Preferences &gt; Settings - User). Here I'm using the setup for my own local machine; update the path to suit for your version of Visual Studio:
+
+~~~
+"vc_vars_arch": "x86",
+"vc_vars_cmd": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat"
 ~~~
 
-Declare the following variables:
+The vc\_vars\_cmd setting is required by the following plugin, but the vc\_vars\_arch setting is optional; if it is not given, it defaults to x86.
 
-~~~c++
-//Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
+Next, select Tools &gt; Developer &gt; New Plugin from the menu and replace the stub plugin code with the following and save it in the default location that Sublime defaults to as something like set\_vc\_vars.py:
 
-//OpenGL context
-SDL_GLContext gContext;
+~~~
+import sublime
+import sublime_plugin
 
-const char *vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n" // the position variable has attribute position 0
-"out vec4 vertexColor;\n" // specify a color output to the fragment shader
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos, 1.0);\n"
-"vertexColor = vec4(0.5, 0.0, 0.0, 1.0);\n" // set the output variable to a dark-red color
-"}\0";
+from threading import Thread
+from subprocess import Popen, PIPE
+from os import environ
 
-const char *fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"in vec4 vertexColor;\n" // the input variable from the vertex shader (same name and same type)
-"void main()\n"
-"{\n"
-"   FragColor = vertexColor;\n"
-"}\n\0";
+SENTINEL="SUBL_VC_VARS"
 
-unsigned int vertexShader;
-unsigned int fragmentShader;
+def _get_vc_env():
+    """
+    Run the batch file specified in the vc_vars_cmd setting (with an
+    optional architecture type) and return back a dictionary of the
+    environment that the batch file sets up.
 
-unsigned int shaderProgram;
+    Returns None if the preference is missing or the batch file fails.
+    """
+    settings = sublime.load_settings("Preferences.sublime-settings")
+    vars_cmd = settings.get("vc_vars_cmd")
+    vars_arch = settings.get("vc_vars_arch", "x86")
+
+    if vars_cmd is None:
+        print("set_vc_vars: Cannot set Visual Studio Environment")
+        print("set_vc_vars: Add 'vc_vars_cmd' setting to settings and restart")
+        return None
+
+    try:
+        # Run the batch, outputting a sentinel value so we can separate out
+        # any error messages the batch might generate.
+        shell_cmd = "\"{0}\" {1} && echo {2} && set".format(vars_cmd, vars_arch, SENTINEL)
+
+        output = Popen(shell_cmd, stdout=PIPE, shell=True).stdout.read()
+
+        lines = [line.strip() for line in output.decode("utf-8").splitlines()]
+        env_lines = lines[lines.index(SENTINEL) + 1:]
+    except:
+        return None
+
+    # Convert from var=value to dictionary key/value pairs. We upper case the
+    # keys, since Python does that to the mapping it stores in environ.
+    env = {}
+    for env_var in env_lines:
+        parts = env_var.split("=", maxsplit=1)
+        env[parts[0].upper()] = parts[1]
+
+    return env
+
+def install_vc_env():
+    """
+    Try to collect the appropriate Visual Studio environment variables and
+    set them into the current environment.
+    """
+    vc_env = _get_vc_env()
+    if vc_env is None:
+        print("set_vc_vars: Unable to fetch the Visual Studio Environment")
+        return sublime.status_message("Error fetching VS Environment")
+
+    # Add newly set environment variables
+    for key in vc_env.keys():
+        if key not in environ:
+            environ[key] = vc_env[key]
+
+    # Update existing variables whose values changed.
+    for key in environ:
+        if key in vc_env and environ[key] != vc_env[key]:
+            environ[key] = vc_env[key]
+
+    # Set a sentinel variable so we know not to try setting up the path again.
+    environ[SENTINEL] = "BOOTSTRAPPED"
+    sublime.status_message("VS Environment enabled")
+
+def plugin_loaded():
+    if sublime.platform() != "windows":
+        return sublime.status_message("VS is not supported on this platform")
+
+    # To reload the environment if it changes, restart Sublime.
+    if SENTINEL in environ:
+        return sublime.status_message("VS Environment already enabled")
+
+    # Update in the background so we don't block the UI
+    Thread(target=install_vc_env).start()
 ~~~
 
-Modern OpenGL requires that we at least set up a vertex and fragment shader if we want to do some rendering so we will briefly introduce shaders and configure two very simple shaders for drawing our first triangle. You can read more about shaders if you really want to understand the inner workings(you should), I will write about it in the future.
+Once you save the plugin, Sublime will load it and execute the plugin\_loaded function, which will do all of the work.You should see the status bar say VS Environment Enabled if it worked.
 
-The first thing we need to do is write the shaders in the shader language GLSL (OpenGL Shading Language). We take the source codes for the shaders and store them in const C strings(fragmentShaderSource and vertexShaderSource) at the top of the code file.
+If you see Error Fetching VS Environment double check that the path to the batch file is correct (note that you need to double all path separators to make them JSON compliant).
 
-Be sure to define your main like this:
+The general idea is that the batch file is executed in a sub-process, and then before returning we also execute the set command to get the command interpreter to dump its entire environment to the console, which the plugin captures.
 
-~~~c++
-int main(int argc, char* args[])
-{}
+Once we have that data, we can easily compare it with the current environment to add in any environment variables that the batch file set up but which didn't already exist, and update the values of any environment variables that were changed (e.g. the PATH).
+
+As a part of this process we also set a new environment variable that tells the plugin that the environment has already been set up, so that if the plugin gets reloaded it doesn't try to run the operation again.
+
+As such, if you need to change the path to the batch file or the architecture that you want to be set up for, you need to change the preference and restart Sublime.
+
+This could be made more robust by having it do something like store the current environment before modifying it and then watching the preferences to see if that setting is changed and act accordingly, but presumably it's not often that you would need to modify these settings.
+
+I also created the following sublime-build file
+
 ~~~
+{
+    "shell_cmd": "cl \"${file}\" /Fe\"${file_base_name}\"",
+    "working_dir": "${file_path}",
+    "selector": "source.c, source.c++",
 
-Next we initialize SDL and OpenGL context:
-
-~~~c++
-    // Initialize SDL
-    SDL_Init( SDL_INIT_VIDEO );
-
-    //Use OpenGL 3.3 core
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 3 );
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 3 );
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
-
-    //Create window
-    gWindow = SDL_CreateWindow( "NANDGIZMOS", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
-
-    //Create context
-    gContext = SDL_GL_CreateContext( gWindow );
-
-    //Initialize GLEW
-    glewExperimental = GL_TRUE;
-    GLenum glewError = glewInit();
-
-    //Use Vsync
-    SDL_GL_SetSwapInterval( 1 );
-~~~
-
-The above code basically initialises SDL and OpenGL.
-
-Next, we compile our shaders so we can use them in the application
-
-~~~c++
-vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    // check for shader compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    // link shaders
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    // check for linking errors
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-~~~
-
-Let's declare our vertices that we want to draw to:
-
-~~~C++
-// set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
-    float vertices[] = {
-        // only triangle
-        -0.5f, -0.5f, 0.0f,  // left
-         0.5f, -0.5f, 0.0f,  // right
-         0.0f,  0.5f, 0.0f   // top
-    };
-~~~
-
-The next step is to give this triangle to OpenGL by creating a buffer
-
-~~~C++
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-    glBindVertexArray(0);
-~~~
-
-This needs to be done only once.
-
-Now, we draw the triangle in the main loop:
-
-~~~C++
-    // Main loop flag
-    bool quit = false;
-
-    //Event handler
-    SDL_Event e;
-
-    //While application is running
-    while( !quit )
-    {
-        //Handle events on queue
-        while( SDL_PollEvent( &e ) != 0 )
+    "variants":
+    [
         {
-            //User requests quit
-            if( e.type == SDL_QUIT )
-            {
-                quit = true;
-            }
-            //Handle keypress with current mouse position
-            else if( e.type == SDL_TEXTINPUT )
-            {
-                int x = 0, y = 0;
+            "name": "Run",
+            "shell_cmd": "cd bin && app.exe"
+        },
 
-                //Toggle quad
-                if( e.text.text[0] == 'q' )
-                {
-                    // gRenderQuad = !gRenderQuad;
-                }
-            }
+        {
+            "name": "Build",
+            "shell_cmd": "nmake"
         }
-
-        // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // draw our first triangle
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        // glBindVertexArray(0); // no need to unbind it every time
-
-        //Update screen
-        SDL_GL_SwapWindow( gWindow );
-    }
+    ]
+}
 ~~~
 
-Finally, let's cleanup:
+Next, create a new file, name it "Makefile" and save it in the root of your project. Now we should have the following file structure for our project.
 
-~~~C++
-    //Disable text input
-    SDL_StopTextInput();
+![](/uploads/lastfilestructure.png){: width="181" height="179"}
 
-    // Delete shaders
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+Copy the following contents into you newly created Makefile:
 
-    //Destroy window
-    SDL_DestroyWindow( gWindow );
-    gWindow = NULL;
-
-    //Quit SDL subsystems
-    SDL_Quit();
-
-    return 0;
 ~~~
+INCLUDES=deps/include
+LIBS_DIR=deps/lib
+
+LIBS=opengl32.lib glu32.lib SDL2main.lib SDL2.lib glew32.lib
+
+# Specify compiler
+CC=cl.exe
+
+# Specify linker
+LINK=link.exe
+
+# Build all target
+all : app
+
+# Compile and Link the object files and dependent libraries into a binary
+app : objs/*obj
+	$(LINK)  -out:bin/app.exe -LIBPATH:$(LIBS_DIR) objs/*obj $(LIBS)
+
+# Compile the source files into object files
+objs/*obj : src/*.cpp
+	$(CC) -D "WIN32" /Fo"objs/" -c -EHsc src/*.cpp -I $(INCLUDES)
+~~~
+
+The Makefile above will compile our source files and link the object files and dependent libraries into an exe to the bin folder. Since we are using MSVC we will be using nmake to build. If you would like to know about Makefiles you can read up on the internet. I will write about it in the future.
+
+In the next part, we will be writing the main C++ source codes to render our Triangle.
