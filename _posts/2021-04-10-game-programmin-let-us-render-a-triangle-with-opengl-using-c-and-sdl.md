@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Game Programming: Let Us Render a Triangle With OpenGL Using C++ and SDL'
+title: 'Game Programmin: Let Us Render a Triangle With OpenGL Using C++ and SDL'
 subtitle: Part 2 - Automating the Build Process
 date: 2021-04-10 09:10:00
 background: /images/createGames/game_dev.jpg
