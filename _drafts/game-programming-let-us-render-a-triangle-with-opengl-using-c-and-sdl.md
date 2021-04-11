@@ -62,13 +62,13 @@ The first thing we need to do is write the shaders in the shader language GLSL (
 
 
 Be sure to define your main like this:
-```
+```c++
 int main(int argc, char* args[])
 {}
 ```
 
 Next we initialize  SDL and OpenGL context:
-```
+```c++
     // Initialize SDL
     SDL_Init( SDL_INIT_VIDEO );
 
@@ -96,7 +96,7 @@ The above code basically initialises SDL and OpenGL.
 
 Next, we compile our shaders so we can use them in the application
 
-```
+```c++
 vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
