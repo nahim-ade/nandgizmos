@@ -225,3 +225,23 @@ Now, we draw the triangle in the main loop:
         SDL_GL_SwapWindow( gWindow );
     }
 ```
+
+Finally, let's cleanup:
+
+```C++
+    //Disable text input
+    SDL_StopTextInput();
+
+    // Delete shaders
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    //Destroy window    
+    SDL_DestroyWindow( gWindow );
+    gWindow = NULL;
+
+    //Quit SDL subsystems
+    SDL_Quit();
+    
+    return 0;
+```
