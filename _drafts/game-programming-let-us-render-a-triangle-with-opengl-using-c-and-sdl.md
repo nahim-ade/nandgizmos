@@ -172,3 +172,56 @@ The next step is to give this triangle to OpenGL by creating a buffer
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
 ```
+
+This needs to be done only once.
+
+Now, we draw the triangle in the main loop:
+
+
+```C++
+    // Main loop flag
+    bool quit = false;
+
+    //Event handler
+    SDL_Event e;
+
+
+    //While application is running
+    while( !quit )
+    {
+        //Handle events on queue
+        while( SDL_PollEvent( &e ) != 0 )
+        {
+            //User requests quit
+            if( e.type == SDL_QUIT )
+            {
+                quit = true;
+            }
+            //Handle keypress with current mouse position
+            else if( e.type == SDL_TEXTINPUT )
+            {
+                int x = 0, y = 0;
+
+                //Toggle quad
+                if( e.text.text[0] == 'q' )
+                {
+                    // gRenderQuad = !gRenderQuad;
+                }
+            }
+        }
+
+        // render
+        // ------
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // draw our first triangle
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        // glBindVertexArray(0); // no need to unbind it every time 
+        
+        //Update screen
+        SDL_GL_SwapWindow( gWindow );
+    }
+```
