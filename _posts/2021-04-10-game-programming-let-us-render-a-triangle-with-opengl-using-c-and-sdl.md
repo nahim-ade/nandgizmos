@@ -2,13 +2,14 @@
 layout: post
 title: 'Game Programming: Let Us Render a Triangle With OpenGL Using C++ and SDL'
 subtitle: Part 3 - The Game Code
-date: 2021-04-10 14:28:42
+date: 2021-04-10 14:28:00
 background: /images/createGames/game_dev.jpg
 ---
 So, we have setup our environment for development and we've automated the build process to make our live easier. Now we have to write the actual game code to render our triangle
 
 We start by including the SDL and glew headers to create our window and call openGL functions
-```c++
+
+~~~c++
 //Using SDL, SDL OpenGL, GLEW, standard IO, and strings
 #define SDL_MAIN_HANDLED
 #include <SDL2\SDL.h>
@@ -17,13 +18,11 @@ We start by including the SDL and glew headers to create our window and call ope
 #include <gl\glu.h>
 
 #include <iostream>
-```
-
-
+~~~
 
 Declare the following variables:
 
-```c++
+~~~c++
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -44,7 +43,7 @@ const char *vertexShaderSource = "#version 330 core\n"
 
 const char *fragmentShaderSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
-"in vec4 vertexColor;\n" // the input variable from the vertex shader (same name and same type) 
+"in vec4 vertexColor;\n" // the input variable from the vertex shader (same name and same type)
 "void main()\n"
 "{\n"
 "   FragColor = vertexColor;\n"
@@ -54,21 +53,22 @@ unsigned int vertexShader;
 unsigned int fragmentShader;
 
 unsigned int shaderProgram;
-```
+~~~
 
 Modern OpenGL requires that we at least set up a vertex and fragment shader if we want to do some rendering so we will briefly introduce shaders and configure two very simple shaders for drawing our first triangle. You can read more about shaders if you really want to understand the inner workings(you should), I will write about it in the future.
 
 The first thing we need to do is write the shaders in the shader language GLSL (OpenGL Shading Language). We take the source codes for the shaders and store them in const C strings(fragmentShaderSource and vertexShaderSource) at the top of the code file.
 
-
 Be sure to define your main like this:
-```c++
+
+~~~c++
 int main(int argc, char* args[])
 {}
-```
+~~~
 
-Next we initialize  SDL and OpenGL context:
-```c++
+Next we initialize SDL and OpenGL context:
+
+~~~c++
     // Initialize SDL
     SDL_Init( SDL_INIT_VIDEO );
 
@@ -76,27 +76,26 @@ Next we initialize  SDL and OpenGL context:
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 3 );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 3 );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
-    
+
     //Create window
     gWindow = SDL_CreateWindow( "NANDGIZMOS", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
-
 
     //Create context
     gContext = SDL_GL_CreateContext( gWindow );
 
     //Initialize GLEW
-    glewExperimental = GL_TRUE; 
+    glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
-    
+
     //Use Vsync
     SDL_GL_SetSwapInterval( 1 );
-```
+~~~
 
 The above code basically initialises SDL and OpenGL.
 
 Next, we compile our shaders so we can use them in the application
 
-```c++
+~~~c++
 vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
@@ -111,7 +110,6 @@ vertexShader = glCreateShader(GL_VERTEX_SHADER);
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
@@ -122,7 +120,6 @@ vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
-
 
     // link shaders
     shaderProgram = glCreateProgram();
@@ -135,11 +132,11 @@ vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
-```
+~~~
 
 Let's declare our vertices that we want to draw to:
 
-```C++
+~~~C++
 // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
@@ -147,12 +144,12 @@ Let's declare our vertices that we want to draw to:
         -0.5f, -0.5f, 0.0f,  // left
          0.5f, -0.5f, 0.0f,  // right
          0.0f,  0.5f, 0.0f   // top
-    }; 
-```
+    };
+~~~
 
 The next step is to give this triangle to OpenGL by creating a buffer
 
-```C++
+~~~C++
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -171,20 +168,18 @@ The next step is to give this triangle to OpenGL by creating a buffer
     // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
-```
+~~~
 
 This needs to be done only once.
 
 Now, we draw the triangle in the main loop:
 
-
-```C++
+~~~C++
     // Main loop flag
     bool quit = false;
 
     //Event handler
     SDL_Event e;
-
 
     //While application is running
     while( !quit )
@@ -219,16 +214,16 @@ Now, we draw the triangle in the main loop:
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        // glBindVertexArray(0); // no need to unbind it every time 
-        
+        // glBindVertexArray(0); // no need to unbind it every time
+
         //Update screen
         SDL_GL_SwapWindow( gWindow );
     }
-```
+~~~
 
 Finally, let's cleanup:
 
-```C++
+~~~C++
     //Disable text input
     SDL_StopTextInput();
 
@@ -236,12 +231,12 @@ Finally, let's cleanup:
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    //Destroy window    
+    //Destroy window
     SDL_DestroyWindow( gWindow );
     gWindow = NULL;
 
     //Quit SDL subsystems
     SDL_Quit();
-    
+
     return 0;
-```
+~~~
